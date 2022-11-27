@@ -13,15 +13,11 @@ public class Matcher {
     }
     
     public boolean match(String input) {
-        int start = 0, index = this.indexOf(input, 0);
+        int start = 0, length = 1;
         for (Element element : pattern.elements()) {
-            for (;;) {
-                final String part = input.substring(start, index);
-                if (element.matches(part)) break;
-                else if (!element.couldMatch(part)) return false;
-                if (index == input.length()) return false;
-                index = this.indexOf(input, index);
-            }
+            int check = element.match(input, start, length);
+            if (check < 1) return false;
+            length = (start = check) + 1;
         }
         return true;
     }
